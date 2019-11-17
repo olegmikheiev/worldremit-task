@@ -17,7 +17,7 @@ public class PositionPage extends PageObject {
     @FindBy(css = "div.job-content-header h1")
     private WebElementFacade positionHeader;
 
-    @FindBy(xpath = "//div[@class, 'job-content-header']//a[contains(), 'Apply Now']")
+    @FindBy(xpath = "//div[@class, 'job-content-header']//a[contains(text(), 'Apply Now')]")
     private WebElementFacade applyNowButton;
 
     @FindBy(id = "First_Name")
