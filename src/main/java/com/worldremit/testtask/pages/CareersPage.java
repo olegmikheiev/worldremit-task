@@ -72,7 +72,7 @@ public class CareersPage extends PageObject {
     }
 
     public void openPosition(String position) {
-        final WebElementFacade positionElement = getJobList().find(By.xpath(".//p[contains(text(), '" + position + "')]"));
+        final WebElementFacade positionElement = getJobList().find(By.xpath(".//p[contains(., '" + position + "')]"));
         WebDriverUtils.click(positionElement);
     }
 

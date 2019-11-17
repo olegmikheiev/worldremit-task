@@ -17,7 +17,10 @@ public class PositionPage extends PageObject {
     @FindBy(css = "div.job-content-header h1")
     private WebElementFacade positionHeader;
 
-    @FindBy(xpath = "//div[@class, 'job-content-header']//a[contains(text(), 'Apply Now')]")
+    @FindBy(css = "div.application-form")
+    private WebElementFacade applicationForm;
+
+    @FindBy(css = "div.job-content-header a")
     private WebElementFacade applyNowButton;
 
     @FindBy(id = "First_Name")
@@ -61,10 +64,10 @@ public class PositionPage extends PageObject {
     }
 
     public List<String> getValidationErrors() {
+        WebDriverUtils.scrollIntoView(applicationForm);
         return findAll(By.cssSelector("span.field-validation-error")).stream()
                 .filter(WebElementState::isCurrentlyVisible)
-                .map(WebElementFacade::getText)
-                .filter(text -> !text.isEmpty())
+                .map(e -> e.getAttribute("data-message-error"))
                 .collect(Collectors.toList());
     }
 }
