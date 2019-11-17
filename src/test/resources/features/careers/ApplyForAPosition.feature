@@ -13,4 +13,4 @@ Feature: Apply for a position on the careers page
     And I open 'QA' position
     And I fill in an application form without a resume
     And I click on apply now
-    Then Validation error 'Please attach a resume' is displayed
+    Then Validation error 'Please attach a resume.' is displayed
