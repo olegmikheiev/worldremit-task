@@ -26,8 +26,11 @@ public class CareersPage extends PageObject {
     @FindBy(id = "office-select")
     private WebElementFacade officeSelect;
 
-    @FindBy(css = "div.greenhouse-job-list div.jobs-grid")
+    @FindBy(css = "div.greenhouse-job-list")
     private WebElementFacade jobList;
+
+    @FindBy(css = "div.greenhouse-processing")
+    private WebElementFacade processingIcon;
 
     public void openPage() {
         WebDriverUtils.navigateTo(PAGE_URL);
@@ -41,14 +44,17 @@ public class CareersPage extends PageObject {
 
     public void clickSeeAllOurRoles() {
         WebDriverUtils.click(seeAllOurRoles);
+        departmentSelect.waitUntilVisible();
     }
 
     public void selectDepartment(String department) {
-        departmentSelect.selectByValue(department);
+        WebDriverUtils.scrollIntoView(departmentSelect)
+                .selectByVisibleText(department);
     }
 
     public void selectOffice(String office) {
-        officeSelect.selectByValue(office);
+        WebDriverUtils.scrollIntoView(officeSelect)
+                .selectByVisibleText(office);
     }
 
     public List<String> getOpenPositions() {
@@ -56,7 +62,9 @@ public class CareersPage extends PageObject {
             log.error("Job list is not present on the page");
             return Collections.emptyList();
         }
-        return jobList.thenFindAll(By.cssSelector("p.job-item-name"))
+        processingIcon.waitUntilNotVisible();
+        return getJobList()
+                .thenFindAll(By.cssSelector("p.job-item-name"))
                 .stream()
                 .map(WebElementFacade::getText)
                 .map(String::trim)
@@ -64,7 +72,12 @@ public class CareersPage extends PageObject {
     }
 
     public void openPosition(String position) {
-        final WebElementFacade positionElement = jobList.find(By.xpath(".//p[contains(), " + position + "]"));
+        final WebElementFacade positionElement = getJobList().find(By.xpath(".//p[contains(), '" + position + "']"));
         WebDriverUtils.click(positionElement);
+    }
+
+    // TODO: Avoid stale element
+    private WebElementFacade getJobList() {
+        return find(By.cssSelector("div.greenhouse-job-list div.jobs-grid"));
     }
 }

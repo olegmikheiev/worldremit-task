@@ -60,8 +60,8 @@ public class CareersSteps {
 
     @Step
     public void openPosition(String role) {
-        final String position = findPositionContains(role);
-        careersPage.openPosition(position);
+        findPositionContains(role);
+        careersPage.openPosition(role);
     }
 
     private String findPositionContains(String role) {
